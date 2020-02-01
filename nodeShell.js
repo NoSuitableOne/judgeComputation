@@ -1,6 +1,7 @@
+const { exec } = require('child_process');
+
 process.stdin.setEncoding('utf8');
 
-let params = process.argv.splice(2);
 let numbers;
 let target;
 
@@ -10,7 +11,7 @@ process.stdin.on("readable", () => {
   while((chunk = process.stdin.read()) !== null) {
     if (!!chunk.replace(/[\r\n]/g, '')) {
       if (!numbers) {
-        numbers = chunk;
+        numbers = chunk.replace(/\s+/g, '');
         process.stdout.write('请输入目标值（[[number]]）:\n');
       } else {
         target = chunk;
@@ -23,6 +24,11 @@ process.stdin.on("readable", () => {
 });
 
 process.stdin.on('end', () => {
-  process.stdout.write(`numbers = ${numbers}, target = ${target}`);
-  process.exit();
+  exec(`node ./judgeComputation.js --numbers=${numbers} --target=${target}`, (error, stdout, stderr) => {
+    if (error) {
+      throw(error);
+    }
+    console.log(stdout);
+    process.exit();
+  });
 });

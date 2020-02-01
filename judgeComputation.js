@@ -170,7 +170,6 @@ function basicOperation (m, n) {
 }
 
 function secondaryOperation (left, right) {
-  // console.log(left, right);
   let result = [];
   for (let i = 0; i < left.length; i++) {
     for (let j = 0; j < right.length; j++) {
@@ -235,4 +234,9 @@ function secondaryOperation (left, right) {
   return result;
 }
 
-main([4, 6, 2, 10], 24);
+let params = process.argv.splice(2);
+let inputParams = [];
+params[0].split('=')[1].split(',').map(ele => {
+  inputParams.push(Number(ele));
+});
+main(inputParams, Number(params[1].split('=')[1]));
